@@ -1435,7 +1435,7 @@
             </h1>
             <p class="hero-date">2026. 06. 06 SAT PM 5:00</p>
             <h1 class="hero-names">
-                <span class="temp">제작중이니 아직 배포 No!! v0.2</span>
+                <span class="temp">제작중이니 아직 배포 No!! v0.3</span>
             </h1>
         </div>
         <div class="scroll-indicator">
@@ -2075,11 +2075,18 @@
             document.getElementById('lightboxTotal').textContent = galleryImages.length;
             document.getElementById('lightbox').classList.add('active');
             document.body.style.overflow = 'hidden';
+            history.pushState({ galleryLightbox: true }, '');
         }
 
         function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-            document.body.style.overflow = '';
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = '';
+                // 히스토리 정리 (X 버튼으로 닫을 때)
+                if (history.state && history.state.galleryLightbox) {
+                    history.back();
+                }
+            }
         }
 
         function prevLightboxImage() {
@@ -2111,12 +2118,31 @@
         function openMapLightbox() {
             document.getElementById('mapLightbox').classList.add('active');
             document.body.style.overflow = 'hidden';
+            history.pushState({ mapLightbox: true }, '');
         }
 
         function closeMapLightbox() {
-            document.getElementById('mapLightbox').classList.remove('active');
-            document.body.style.overflow = '';
+            if (document.getElementById('mapLightbox').classList.contains('active')) {
+                document.getElementById('mapLightbox').classList.remove('active');
+                document.body.style.overflow = '';
+                // 히스토리 정리 (X 버튼으로 닫을 때)
+                if (history.state && history.state.mapLightbox) {
+                    history.back();
+                }
+            }
         }
+
+        // 뒤로가기 버튼으로 라이트박스 닫기
+        window.addEventListener('popstate', (e) => {
+            if (document.getElementById('mapLightbox').classList.contains('active')) {
+                document.getElementById('mapLightbox').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
 
         // 🔹 DOM 준비된 뒤에만 요소들에 접근하도록
         document.addEventListener('DOMContentLoaded', () => {
