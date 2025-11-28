@@ -526,6 +526,8 @@
             overflow: hidden;
             margin-bottom: var(--spacing-md);
             background: var(--color-ivory);
+            touch-action: pan-x;          /* 가로 스와이프만 허용, 세로 스크롤 막기 */
+            overscroll-behavior: contain; /* 상/하단에서 바운스되면서 바깥 스크롤로 안 튀게 (옵션) */
         }
 
         .gallery-main img {
