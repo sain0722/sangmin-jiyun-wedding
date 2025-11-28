@@ -863,12 +863,21 @@
             padding: var(--spacing-sm);
             margin-bottom: var(--spacing-md);
             box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-fast);
+        }
+
+        .directions-image-container:hover {
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
         }
 
         .directions-image {
             width: 100%;
             border-radius: 12px;
             display: block;
+            transition: transform var(--transition-medium);
         }
 
         .directions-image-container:hover .directions-image {
@@ -1835,6 +1844,21 @@
         <img src="" alt="Gallery Image" id="lightboxImage" onclick="event.stopPropagation()">
         <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); nextLightboxImage()">&#8250;</button>
         <p class="lightbox-counter"><span id="lightboxIndex">1</span> / <span id="lightboxTotal">11</span></p>
+    </div>
+
+    <!-- Map Lightbox - 확대 가능 -->
+    <div class="map-lightbox" id="mapLightbox" onclick="closeMapLightbox()">
+        <button class="map-lightbox-close" onclick="closeMapLightbox()">&times;</button>
+        <div class="map-lightbox-content" onclick="event.stopPropagation()">
+            <img src="약도.jpg" alt="약도" id="mapLightboxImage" onclick="toggleMapZoom()">
+        </div>
+        <p class="map-lightbox-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            두 손가락으로 확대 · 더블탭으로 확대/축소
+        </p>
     </div>
 
     <!-- Music Player -->
