@@ -508,8 +508,7 @@
             display: none;
         }
 
-
-        /* ===== GALLERY SECTION - NEW STYLE ===== */
+        /* ===== GALLERY SECTION - UPGRADED ===== */
         .gallery-section {
             background: var(--color-white);
             padding-bottom: var(--spacing-lg);
@@ -517,37 +516,82 @@
 
         .gallery-container {
             position: relative;
+            margin-bottom: var(--spacing-md);
         }
 
         .gallery-main {
             width: 100%;
             aspect-ratio: 3/4;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            margin-bottom: var(--spacing-md);
             background: var(--color-ivory);
-            touch-action: pan-x;          /* 가로 스와이프만 허용, 세로 스크롤 막기 */
-            overscroll-behavior: contain; /* 상/하단에서 바운스되면서 바깥 스크롤로 안 튀게 (옵션) */
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            cursor: pointer;
+        }
+
+        .gallery-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            border-radius: 20px;
+            pointer-events: none;
+            z-index: 2;
         }
 
         .gallery-main img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity var(--transition-medium);
+            transition: transform 0.5s ease, opacity var(--transition-medium);
+        }
+
+        .gallery-main:hover img {
+            transform: scale(1.02);
         }
 
         .gallery-main img.loading {
             opacity: 0.5;
         }
 
+        .gallery-main .zoom-hint {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+            z-index: 3;
+        }
+
+        .gallery-main:hover .zoom-hint {
+            opacity: 1;
+        }
+
+        .gallery-main .zoom-hint svg {
+            width: 14px;
+            height: 14px;
+        }
+
         .gallery-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.9);
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.95);
             border: none;
             border-radius: 50%;
             cursor: pointer;
@@ -555,13 +599,18 @@
             align-items: center;
             justify-content: center;
             transition: var(--transition-fast);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             z-index: 10;
         }
 
         .gallery-nav:hover {
             background: var(--color-white);
             transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .gallery-nav:active {
+            transform: translateY(-50%) scale(0.95);
         }
 
         .gallery-nav svg {
@@ -570,23 +619,56 @@
             color: var(--color-charcoal);
         }
 
-        .gallery-prev { left: 10px; }
-        .gallery-next { right: 10px; }
+        .gallery-prev { left: 12px; }
+        .gallery-next { right: 12px; }
 
         .gallery-counter {
             text-align: center;
-            font-family: var(--font-display);
-            font-size: 0.9rem;
-            color: var(--color-warm-gray);
             margin-bottom: var(--spacing-md);
-            letter-spacing: 0.1em;
+            position: relative;
+        }
+
+        .gallery-counter-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--color-charcoal);
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+
+        .gallery-counter-num {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            color: var(--color-white);
+            letter-spacing: 0.05em;
+        }
+
+        .gallery-counter-num .current {
+            color: var(--color-gold);
+            font-weight: 600;
+        }
+
+        .gallery-progress {
+            width: 60px;
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .gallery-progress-bar {
+            height: 100%;
+            background: var(--color-gold);
+            border-radius: 2px;
+            transition: width var(--transition-fast);
         }
 
         .gallery-thumbnails {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             overflow-x: auto;
-            padding: 4px 0;
+            padding: 8px 4px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
@@ -599,24 +681,27 @@
 
         .gallery-thumb {
             flex-shrink: 0;
-            width: calc((100% - 32px) / 5);
-            min-width: 60px;
+            width: calc((100% - 40px) / 5);
+            min-width: 58px;
             aspect-ratio: 1;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
             transition: var(--transition-fast);
-            opacity: 0.6;
+            opacity: 0.5;
+            transform: scale(0.95);
         }
 
         .gallery-thumb.active {
             border-color: var(--color-gold);
             opacity: 1;
+            transform: scale(1);
+            box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3);
         }
 
         .gallery-thumb:hover {
-            opacity: 1;
+            opacity: 0.8;
         }
 
         .gallery-thumb img {
@@ -784,6 +869,36 @@
             width: 100%;
             border-radius: 12px;
             display: block;
+        }
+
+        .directions-image-container:hover .directions-image {
+            transform: scale(1.02);
+        }
+
+        .directions-zoom-hint {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .directions-image-container:hover .directions-zoom-hint {
+            opacity: 1;
+        }
+
+        .directions-zoom-hint svg {
+            width: 14px;
+            height: 14px;
         }
 
         .map-buttons {
@@ -1387,6 +1502,14 @@
         <div class="gallery-container">
             <div class="gallery-main" onclick="openLightbox()">
                 <img src="zkkKIPT1256-3.jpg" alt="Gallery" id="galleryMain">
+                <div class="zoom-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                        <path d="M11 8v6M8 11h6"></path>
+                    </svg>
+                    크게 보기
+                </div>
             </div>
 
             <button class="gallery-nav gallery-prev" onclick="prevGalleryImage()">
@@ -1401,7 +1524,14 @@
             </button>
         </div>
 
-        <p class="gallery-counter"><span id="currentIndex">1</span> / <span id="totalCount">11</span></p>
+        <div class="gallery-counter">
+            <div class="gallery-counter-inner">
+                <span class="gallery-counter-num"><span class="current" id="currentIndex">1</span> / <span id="totalCount">11</span></span>
+                <div class="gallery-progress">
+                    <div class="gallery-progress-bar" id="galleryProgress" style="width: 9.09%"></div>
+                </div>
+            </div>
+        </div>
 
         <div class="gallery-thumbnails" id="thumbnailContainer"> </div>
     </section>
@@ -1444,8 +1574,16 @@
         <h3 class="venue-name">파티웨딩유</h3>
         <p class="venue-address">경기도 수원시 권선구 세화로 218 (서둔동 9-16번지)</p>
 
-        <div class="directions-image-container">
+        <div class="directions-image-container" onclick="openMapLightbox()">
             <img src="약도.jpg" alt="오시는 길 약도" class="directions-image">
+            <div class="directions-zoom-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                    <path d="M11 8v6M8 11h6"></path>
+                </svg>
+                확대하여 보기
+            </div>
         </div>
 
         <div class="map-buttons">
@@ -1776,6 +1914,10 @@
 
             document.getElementById('currentIndex').textContent = currentGalleryIndex + 1;
 
+            // Update progress bar
+            const progress = ((currentGalleryIndex + 1) / galleryImages.length) * 100;
+            document.getElementById('galleryProgress').style.width = progress + '%';
+
             // Update thumbnails
             const thumbs = document.querySelectorAll('.gallery-thumb');
             thumbs.forEach((thumb, index) => {
@@ -1856,6 +1998,49 @@
             if (e.key === 'ArrowRight') nextLightboxImage();
         });
 
+        // Map lightbox functions
+        let mapScale = 1;
+        let mapPosX = 0;
+        let mapPosY = 0;
+        let initialDistance = 0;
+        let initialScale = 1;
+
+        function openMapLightbox() {
+            document.getElementById('mapLightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            resetMapZoom();
+        }
+
+        function closeMapLightbox() {
+            document.getElementById('mapLightbox').classList.remove('active');
+            document.body.style.overflow = '';
+            resetMapZoom();
+        }
+
+        function resetMapZoom() {
+            mapScale = 1;
+            mapPosX = 0;
+            mapPosY = 0;
+            updateMapTransform();
+        }
+
+        function updateMapTransform() {
+            const img = document.getElementById('mapLightboxImage');
+            img.style.transform = `translate(${mapPosX}px, ${mapPosY}px) scale(${mapScale})`;
+        }
+
+        function toggleMapZoom() {
+            if (mapScale > 1) {
+                mapScale = 1;
+                mapPosX = 0;
+                mapPosY = 0;
+            } else {
+                mapScale = 2.5;
+            }
+            updateMapTransform();
+        }
+
+
         // 🔹 DOM 준비된 뒤에만 요소들에 접근하도록
         document.addEventListener('DOMContentLoaded', () => {
             // 썸네일 자동 생성
@@ -1900,6 +2085,92 @@
                     prevLightboxImage();
                 }
             });
+
+            // Map lightbox keyboard event
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.getElementById('mapLightbox').classList.contains('active')) {
+                    closeMapLightbox();
+                }
+            });
+
+            const mapLightboxImage = document.getElementById('mapLightboxImage');
+            const mapLightboxContent = document.querySelector('.map-lightbox-content');
+
+            // 더블탭으로 확대/축소
+            let lastTap = 0;
+            mapLightboxImage.addEventListener('touchend', (e) => {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                    toggleMapZoom();
+                }
+                lastTap = currentTime;
+            });
+
+            // 핀치 줌
+            mapLightboxContent.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    initialDistance = getDistance(e.touches[0], e.touches[1]);
+                    initialScale = mapScale;
+                }
+            }, { passive: false });
+
+            mapLightboxContent.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const currentDistance = getDistance(e.touches[0], e.touches[1]);
+                    const scale = (currentDistance / initialDistance) * initialScale;
+                    mapScale = Math.min(Math.max(scale, 1), 5); // 1배 ~ 5배
+                    updateMapTransform();
+                } else if (e.touches.length === 1 && mapScale > 1) {
+                    // 확대 상태에서 드래그로 이동
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // 드래그로 이동 (확대 상태에서)
+            let isDragging = false;
+            let startX, startY, startPosX, startPosY;
+
+            mapLightboxImage.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1 && mapScale > 1) {
+                    isDragging = true;
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                    startPosX = mapPosX;
+                    startPosY = mapPosY;
+                }
+            });
+
+            mapLightboxImage.addEventListener('touchmove', (e) => {
+                if (isDragging && e.touches.length === 1 && mapScale > 1) {
+                    e.preventDefault();
+                    const deltaX = e.touches[0].clientX - startX;
+                    const deltaY = e.touches[0].clientY - startY;
+                    mapPosX = startPosX + deltaX;
+                    mapPosY = startPosY + deltaY;
+                    updateMapTransform();
+                }
+            }, { passive: false });
+
+            mapLightboxImage.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            // 두 손가락 사이 거리 계산
+            function getDistance(touch1, touch2) {
+                const dx = touch1.clientX - touch2.clientX;
+                const dy = touch1.clientY - touch2.clientY;
+                return Math.sqrt(dx * dx + dy * dy);
+            }
+
+            // 마우스 더블클릭 (PC)
+            mapLightboxImage.addEventListener('dblclick', () => {
+                toggleMapZoom();
+            });
+
         });
 
         // Toast function
