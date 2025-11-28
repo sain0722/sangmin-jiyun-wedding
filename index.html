@@ -1931,18 +1931,18 @@
         <p class="lightbox-counter"><span id="lightboxIndex">1</span> / <span id="lightboxTotal">11</span></p>
     </div>
 
-    <!-- Map Lightbox - 확대 가능 -->
+    <!-- Map Lightbox - 핀치 줌 -->
     <div class="map-lightbox" id="mapLightbox" onclick="closeMapLightbox()">
         <button class="map-lightbox-close" onclick="closeMapLightbox()">&times;</button>
         <div class="map-lightbox-content" onclick="event.stopPropagation()">
-            <img src="약도.jpg" alt="약도" id="mapLightboxImage" onclick="toggleMapZoom()">
+            <img src="약도.jpg" alt="약도" id="mapLightboxImage">
         </div>
         <p class="map-lightbox-hint">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
             </svg>
-            두 손가락으로 확대 · 더블탭으로 확대/축소
+            두 손가락으로 확대/축소
         </p>
     </div>
 
@@ -2108,71 +2108,14 @@
         });
 
         // Map lightbox functions
-        let mapScale = 1;
-        let mapPosX = 0;
-        let mapPosY = 0;
-        let initialDistance = 0;
-        let initialScale = 1;
-
         function openMapLightbox() {
             document.getElementById('mapLightbox').classList.add('active');
             document.body.style.overflow = 'hidden';
-            resetMapZoom();
         }
 
         function closeMapLightbox() {
             document.getElementById('mapLightbox').classList.remove('active');
             document.body.style.overflow = '';
-            resetMapZoom();
-        }
-
-        function resetMapZoom() {
-            mapScale = 1;
-            mapPosX = 0;
-            mapPosY = 0;
-            updateMapTransform();
-        }
-
-        function updateMapTransform() {
-            const img = document.getElementById('mapLightboxImage');
-            img.style.transform = `translate(${mapPosX}px, ${mapPosY}px) scale(${mapScale})`;
-        }
-
-        function toggleMapZoom(clientX, clientY) {
-            if (mapScale > 1) {
-                mapScale = 1;
-                mapPosX = 0;
-                mapPosY = 0;
-                updateMapTransform();
-            } else {
-                zoomAtPoint(clientX, clientY, 2.5);
-            }
-        }
-
-        function zoomAtPoint(clientX, clientY, newScale) {
-            const img = document.getElementById('mapLightboxImage');
-            const rect = img.getBoundingClientRect();
-
-            // 이미지 중심 기준 클릭 위치
-            const imgCenterX = rect.left + rect.width / 2;
-            const imgCenterY = rect.top + rect.height / 2;
-
-            // 클릭 지점과 이미지 중심 사이의 거리
-            const offsetX = clientX - imgCenterX;
-            const offsetY = clientY - imgCenterY;
-
-            if (newScale > 1) {
-                // 확대: 클릭한 지점을 중심으로
-                mapPosX = -offsetX * (newScale - 1) / newScale;
-                mapPosY = -offsetY * (newScale - 1) / newScale;
-            } else {
-                // 축소: 원위치
-                mapPosX = 0;
-                mapPosY = 0;
-            }
-
-            mapScale = newScale;
-            updateMapTransform();
         }
 
         // 🔹 DOM 준비된 뒤에만 요소들에 접근하도록
@@ -2228,99 +2171,53 @@
             });
 
             const mapLightboxImage = document.getElementById('mapLightboxImage');
-            const mapLightboxContent = document.querySelector('.map-lightbox-content');
 
-            // 더블탭으로 확대/축소
-            let lastTap = 0;
-            let lastTapX = 0;
-            let lastTapY = 0;
-
-            mapLightboxImage.addEventListener('touchend', (e) => {
-                const currentTime = new Date().getTime();
-                const tapLength = currentTime - lastTap;
-
-                if (tapLength < 300 && tapLength > 0) {
-                    e.preventDefault();
-                    toggleMapZoom(lastTapX, lastTapY);  // 좌표 전달
-                }
-
-                lastTap = currentTime;
-                if (e.changedTouches.length > 0) {
-                    lastTapX = e.changedTouches[0].clientX;
-                    lastTapY = e.changedTouches[0].clientY;
-                }
-            });
+            // 핀치 줌 변수
+            let scale = 1;
+            let posX = 0;
+            let posY = 0;
+            let lastDistance = 0;
+            let lastX = 0;
+            let lastY = 0;
 
             mapLightboxImage.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    lastTapX = e.touches[0].clientX;
-                    lastTapY = e.touches[0].clientY;
-                }
-            });
-
-            // 핀치 줌
-            mapLightboxContent.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 2) {
-                    e.preventDefault();
-                    initialDistance = getDistance(e.touches[0], e.touches[1]);
-                    initialScale = mapScale;
-                }
-            }, { passive: false });
-
-            mapLightboxContent.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const currentDistance = getDistance(e.touches[0], e.touches[1]);
-                    const scale = (currentDistance / initialDistance) * initialScale;
-                    mapScale = Math.min(Math.max(scale, 1), 5); // 1배 ~ 5배
-                    updateMapTransform();
-                } else if (e.touches.length === 1 && mapScale > 1) {
-                    // 확대 상태에서 드래그로 이동
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
-            // 드래그로 이동 (확대 상태에서)
-            let isDragging = false;
-            let startX, startY, startPosX, startPosY;
-
-            mapLightboxImage.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1 && mapScale > 1) {
-                    isDragging = true;
-                    startX = e.touches[0].clientX;
-                    startY = e.touches[0].clientY;
-                    startPosX = mapPosX;
-                    startPosY = mapPosY;
+                    lastDistance = getDistance(e.touches[0], e.touches[1]);
+                } else if (e.touches.length === 1) {
+                    lastX = e.touches[0].clientX;
+                    lastY = e.touches[0].clientY;
                 }
             });
 
             mapLightboxImage.addEventListener('touchmove', (e) => {
-                if (isDragging && e.touches.length === 1 && mapScale > 1) {
-                    e.preventDefault();
-                    const deltaX = e.touches[0].clientX - startX;
-                    const deltaY = e.touches[0].clientY - startY;
-                    mapPosX = startPosX + deltaX;
-                    mapPosY = startPosY + deltaY;
-                    updateMapTransform();
+                e.preventDefault();
+
+                if (e.touches.length === 2) {
+                    // 핀치 줌
+                    const dist = getDistance(e.touches[0], e.touches[1]);
+                    const delta = dist / lastDistance;
+                    scale = Math.min(Math.max(scale * delta, 1), 5);
+                    lastDistance = dist;
+                    applyTransform();
+                } else if (e.touches.length === 1 && scale > 1) {
+                    // 드래그 이동
+                    const deltaX = e.touches[0].clientX - lastX;
+                    const deltaY = e.touches[0].clientY - lastY;
+                    posX += deltaX;
+                    posY += deltaY;
+                    lastX = e.touches[0].clientX;
+                    lastY = e.touches[0].clientY;
+                    applyTransform();
                 }
             }, { passive: false });
 
-            mapLightboxImage.addEventListener('touchend', () => {
-                isDragging = false;
-            });
-
-            // 두 손가락 사이 거리 계산
-            function getDistance(touch1, touch2) {
-                const dx = touch1.clientX - touch2.clientX;
-                const dy = touch1.clientY - touch2.clientY;
-                return Math.sqrt(dx * dx + dy * dy);
+            function getDistance(t1, t2) {
+                return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
             }
 
-            // 마우스 더블클릭 (PC)
-            mapLightboxImage.addEventListener('dblclick', (e) => {
-                toggleMapZoom(e.clientX, e.clientY);
-            });
-
+            function applyTransform() {
+                mapLightboxImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+            }
         });
 
         // Toast function
