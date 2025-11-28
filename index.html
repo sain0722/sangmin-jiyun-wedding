@@ -2198,6 +2198,13 @@
                     const delta = dist / lastDistance;
                     scale = Math.min(Math.max(scale * delta, 1), 5);
                     lastDistance = dist;
+
+                    // 1배로 축소되면 위치 초기화
+                    if (scale <= 1) {
+                        posX = 0;
+                        posY = 0;
+                    }
+
                     applyTransform();
                 } else if (e.touches.length === 1 && scale > 1) {
                     // 드래그 이동
