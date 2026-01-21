@@ -20,6 +20,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Diphylleia&family=Yeon+Sung&display=swap" rel="stylesheet">
 
+    <!-- Naver Maps API (NCP Client ID 필요) -->
+    <script
+      type="text/javascript"
+      src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=Lb9ttibA3LOeDsACbWCkKRiGjZpfeSs6TwStuuiS"></script>
+
     <style>
         :root {
             --color-background: #FDFBF7;
@@ -35,9 +40,9 @@
             --color-rose: #D4A5A5;
             --color-red: rgba(255, 0, 0, 0.8);
             
-            --font-display: 'DM Serif Display', serif;
-            --font-korean: 'Diphylleia';
-            --font-body: 'Crimson Pro', 'Nanum Myeongjo', serif;
+            --font-display: 'Nanum Myeongjo';
+            --font-korean: 'Nanum Myeongjo';
+            --font-body: 'Nanum Myeongjo', serif;
 
             /*--font-display: 'DM Serif Display', serif;*/
             /*--font-korean: 'SUIT', 'Noto Sans KR', sans-serif;*/
@@ -96,10 +101,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 110%;
+            width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(1.05);
+            /*filter: brightness(1.00);*/
         }
 
         .hero-overlay {
@@ -108,12 +113,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0.1) 0%,
-                rgba(255,255,255,0.3) 50%,
-                rgba(253,251,247,0.9) 100%
-            );
+            /*background: linear-gradient(*/
+            /*    to bottom,*/
+            /*    rgba(255,255,255,0.1) 80%,*/
+            /*    rgba(255,255,255,0.3) 90%,*/
+            /*    rgba(253,251,247,0.9) 100%*/
+            /*);*/
         }
 
         .hero-content {
@@ -995,6 +1000,22 @@
             height: 14px;
         }
 
+        /* Naver Map */
+        .naver-map-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            background: var(--color-ivory);
+        }
+
+        #naverMap {
+            width: 100%;
+            height: 100%;
+        }
+
         .map-buttons {
             display: flex;
             gap: 8px;
@@ -1008,7 +1029,7 @@
             border-radius: 12px;
             background: var(--color-white);
             font-family: var(--font-body);
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: var(--color-charcoal);
             cursor: pointer;
             transition: var(--transition-fast);
@@ -1427,21 +1448,21 @@
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js"></script>
     <!-- Hero Section -->
     <section class="hero">
-        <img src="zkkKIPT1256-3.jpg" alt="Wedding Photo" class="hero-image">
+        <img src="KakaoTalk_20260116_215057088_01.jpg" alt="Wedding Photo" class="hero-image">
         <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <p class="hero-subtitle">Wedding Invitation</p>
-            <h1 class="hero-names">
-                <span class="name">이상민</span> <span class="ampersand">&</span> <span class="name">은지윤</span>
-            </h1>
-            <p class="hero-date">2026. 06. 06 토요일 PM 5:00</p>
-            <h1 class="hero-names">
-                <span class="temp">글씨 크기 수정중 v0.4.3</span>
-            </h1>
+<!--        <div class="hero-content">-->
+<!--            <p class="hero-subtitle">Wedding Invitation</p>-->
+<!--            <h1 class="hero-names">-->
+<!--                <span class="name">이상민</span> <span class="ampersand">&</span> <span class="name">은지윤</span>-->
+<!--            </h1>-->
+<!--            <p class="hero-date">2026. 06. 06 토요일 PM 5:00</p>-->
+<!--            <h1 class="hero-names">-->
+<!--                <span class="temp">글씨 크기 수정중 v0.4.3</span>-->
+<!--            </h1>-->
         </div>
-        <div class="scroll-indicator">
-            <span>SCROLL</span>
-        </div>
+<!--        <div class="scroll-indicator">-->
+<!--            <span>SCROLL</span>-->
+<!--        </div>-->
     </section>
 
     <!-- Greeting Section -->
@@ -1632,33 +1653,33 @@
     </section>
 
     <!-- Video Section -->
-    <section class="video-section fade-in">
-        <p class="section-title">웨딩 영상</p>
+<!--    <section class="video-section fade-in">-->
+<!--        <p class="section-title">웨딩 영상</p>-->
 
-        <div class="video-container">
-            <!-- 영상이 준비되면 아래 주석 해제하고 video-placeholder div 삭제 -->
-            <!-- <video controls poster="video-poster.jpg">
-                <source src="wedding-video.mp4" type="video/mp4">
-            </video> -->
+<!--        <div class="video-container">-->
+<!--            &lt;!&ndash; 영상이 준비되면 아래 주석 해제하고 video-placeholder div 삭제 &ndash;&gt;-->
+<!--            &lt;!&ndash; <video controls poster="video-poster.jpg">-->
+<!--                <source src="wedding-video.mp4" type="video/mp4">-->
+<!--            </video> &ndash;&gt;-->
 
-            <!-- 영상 준비 전 플레이스홀더 -->
-            <div class="video-placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-                <p>영상이 준비 중입니다</p>
-            </div>
-        </div>
-    </section>
+<!--            &lt;!&ndash; 영상 준비 전 플레이스홀더 &ndash;&gt;-->
+<!--            <div class="video-placeholder">-->
+<!--                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">-->
+<!--                    <polygon points="5 3 19 12 5 21 5 3"></polygon>-->
+<!--                </svg>-->
+<!--                <p>영상이 준비 중입니다</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
 
-    <section class="video-section fade-in">
-            <div class="video-container">
-            <video controls poster="KIPT1608.JPG">
-                <source src="웨딩_인사.mp4" type="video/mp4">
-            </video>
+<!--    <section class="video-section fade-in">-->
+<!--            <div class="video-container">-->
+<!--            <video controls poster="KIPT1608.JPG">-->
+<!--                <source src="웨딩_인사.mp4" type="video/mp4">-->
+<!--            </video>-->
 
-        </div>
-    </section>
+<!--        </div>-->
+<!--    </section>-->
 
     <!-- Location Section -->
     <section class="location-section fade-in">
@@ -1666,16 +1687,8 @@
         <h3 class="venue-name">수원 파티웨딩유</h3>
         <p class="venue-address">경기도 수원시 권선구 세화로 218 (서둔동 9-16번지)</p>
 
-        <div class="directions-image-container" onclick="openMapLightbox()">
-            <img src="약도.jpg" alt="오시는 길 약도" class="directions-image">
-            <div class="directions-zoom-hint">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                    <path d="M11 8v6M8 11h6"></path>
-                </svg>
-                확대하여 보기
-            </div>
+        <div class="naver-map-container">
+            <div id="naverMap" aria-label="네이버 지도"></div>
         </div>
 
         <div class="map-buttons">
@@ -1929,21 +1942,6 @@
         <p class="lightbox-counter"><span id="lightboxIndex">1</span> / <span id="lightboxTotal">11</span></p>
     </div>
 
-    <!-- Map Lightbox - 핀치 줌 -->
-    <div class="map-lightbox" id="mapLightbox" onclick="closeMapLightbox()">
-        <button class="map-lightbox-close" onclick="closeMapLightbox()">&times;</button>
-        <div class="map-lightbox-content" onclick="event.stopPropagation()">
-            <img src="약도.jpg" alt="약도" id="mapLightboxImage">
-        </div>
-        <p class="map-lightbox-hint">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-            </svg>
-            두 손가락으로 확대/축소
-        </p>
-    </div>
-
     <!-- Music Player -->
     <div class="music-player">
         <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
@@ -2112,30 +2110,41 @@
             if (e.key === 'ArrowRight') nextLightboxImage();
         });
 
-        // Map lightbox functions
-        function openMapLightbox() {
-            document.getElementById('mapLightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            history.pushState({ mapLightbox: true }, '');
+        // Naver Map
+        function initNaverMap() {
+            const mapEl = document.getElementById('naverMap');
+            if (!mapEl || !window.naver || !naver.maps) return;
+
+            const location = new naver.maps.LatLng(37.2712, 126.9954); // 수원 파티웨딩유
+
+            const map = new naver.maps.Map('naverMap', {
+                center: location,
+                zoom: 16,
+                zoomControl: false,
+                scaleControl: false,
+                logoControl: false,
+                mapDataControl: false
+            });
+
+            const marker = new naver.maps.Marker({
+                position: location,
+                map: map
+            });
+
+            const infoWindow = new naver.maps.InfoWindow({
+                content: `
+                    <div style="padding:8px 12px;font-size:13px;line-height:1.3;">
+                        <strong>파티웨딩유</strong><br>
+                        결혼식장
+                    </div>
+                `
+            });
+
+            infoWindow.open(map, marker);
         }
 
-        function closeMapLightbox() {
-            if (document.getElementById('mapLightbox').classList.contains('active')) {
-                document.getElementById('mapLightbox').classList.remove('active');
-                document.body.style.overflow = '';
-                // 히스토리 정리 (X 버튼으로 닫을 때)
-                if (history.state && history.state.mapLightbox) {
-                    history.back();
-                }
-            }
-        }
-
-        // 뒤로가기 버튼으로 라이트박스 닫기
+        // 뒤로가기 버튼으로 갤러리 라이트박스 닫기
         window.addEventListener('popstate', (e) => {
-            if (document.getElementById('mapLightbox').classList.contains('active')) {
-                document.getElementById('mapLightbox').classList.remove('active');
-                document.body.style.overflow = '';
-            }
             if (document.getElementById('lightbox').classList.contains('active')) {
                 document.getElementById('lightbox').classList.remove('active');
                 document.body.style.overflow = '';
@@ -2149,6 +2158,9 @@
 
             // 초기 갤러리 상태 세팅
             updateGallery();
+
+            // 지도 초기화
+            initNaverMap();
 
             // 터치 이벤트 바인딩 (이 부분은 DOM 준비 후에 해야 안전)
             const galleryMain = document.querySelector('.gallery-main');
@@ -2187,91 +2199,6 @@
                 }
             });
 
-            // Map lightbox keyboard event
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && document.getElementById('mapLightbox').classList.contains('active')) {
-                    closeMapLightbox();
-                }
-            });
-
-            const mapLightboxImage = document.getElementById('mapLightboxImage');
-
-            // 핀치 줌 변수
-            let scale = 1;
-            let posX = 0;
-            let posY = 0;
-            let lastDistance = 0;
-            let lastX = 0;
-            let lastY = 0;
-
-            mapLightboxImage.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 2) {
-                    lastDistance = getDistance(e.touches[0], e.touches[1]);
-                } else if (e.touches.length === 1) {
-                    lastX = e.touches[0].clientX;
-                    lastY = e.touches[0].clientY;
-                }
-            });
-
-            mapLightboxImage.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-
-                if (e.touches.length === 2) {
-                    // 핀치 줌
-                    const dist = getDistance(e.touches[0], e.touches[1]);
-                    const delta = dist / lastDistance;
-                    scale = Math.min(Math.max(scale * delta, 1), 5);
-                    lastDistance = dist;
-
-                    // 1배로 축소되면 위치 초기화
-                    if (scale <= 1) {
-                        posX = 0;
-                        posY = 0;
-                    } else {
-                        // 확대 시 영역 제한 적용
-                        clampPosition();
-                    }
-
-                    applyTransform();
-                } else if (e.touches.length === 1 && scale > 1) {
-                    // 드래그 이동
-                    const deltaX = e.touches[0].clientX - lastX;
-                    const deltaY = e.touches[0].clientY - lastY;
-                    posX += deltaX;
-                    posY += deltaY;
-                    lastX = e.touches[0].clientX;
-                    lastY = e.touches[0].clientY;
-
-                    // 영역 제한 적용
-                    clampPosition();
-                    applyTransform();
-                }
-            }, { passive: false });
-
-            function getDistance(t1, t2) {
-                return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
-            }
-
-            function clampPosition() {
-                const rect = mapLightboxImage.getBoundingClientRect();
-                const containerRect = mapLightboxImage.parentElement.getBoundingClientRect();
-
-                // 확대된 이미지의 실제 크기
-                const imgWidth = rect.width;
-                const imgHeight = rect.height;
-
-                // 이동 가능한 최대 범위 계산
-                const maxX = Math.max(0, (imgWidth - containerRect.width) / 2);
-                const maxY = Math.max(0, (imgHeight - containerRect.height) / 2);
-
-                // 범위 제한
-                posX = Math.min(maxX, Math.max(-maxX, posX));
-                posY = Math.min(maxY, Math.max(-maxY, posY));
-            }
-
-            function applyTransform() {
-                mapLightboxImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-            }
         });
 
         // Toast function
