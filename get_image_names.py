@@ -1,6 +1,6 @@
 import os
 
-TARGET_DIR = "gallery_images"
+TARGET_DIR = "리사이즈이미지"
 OUTPUT_FILE = "gallery_list.js"
 
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".JPG", ".JPEG", ".PNG")

@@ -98,6 +98,11 @@
             overflow: hidden;
         }
 
+        .hero-images {
+            position: absolute;
+            inset: 0;
+        }
+
         .hero-image {
             position: absolute;
             top: 0;
@@ -105,8 +110,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /*filter: brightness(1.00);*/
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            will-change: opacity;
         }
+
+        .hero-image.active {
+            opacity: 1;
+        }
+
 
         .hero-overlay {
             position: absolute;
@@ -956,8 +968,8 @@
         }
 
         .map-icon {
-            width: 18px;
-            height: 18px;
+            width: 60px;
+            height: 60px;
             object-fit: contain;
         }
 
@@ -1048,7 +1060,7 @@
         .map-btn {
             flex: 1;
             padding: 14px;
-            border: 1px solid var(--color-beige);
+            /*border: 1px solid var(--color-beige);*/
             border-radius: 12px;
             background: var(--color-white);
             font-family: var(--font-body);
@@ -1471,7 +1483,12 @@
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js"></script>
     <!-- Hero Section -->
     <section class="hero">
-        <img src="KakaoTalk_20260116_215057088_01.jpg" alt="Wedding Photo" class="hero-image">
+        <div class="hero-images">
+<!--            <img src="hero_images/KakaoTalk_20260116_215057088.jpg" class="hero-image active">-->
+            <img src="hero_images/KakaoTalk_20260116_215057088_01.jpg" class="hero-image active">
+<!--            <img src="hero_images/KakaoTalk_20260116_215057088_02.jpg" class="hero-image">-->
+<!--            <img src="hero_images/KakaoTalk_20260116_215057088_03.jpg" class="hero-image">-->
+        </div>
         <div class="hero-overlay"></div>
 <!--        <div class="hero-content">-->
 <!--            <p class="hero-subtitle">Wedding Invitation</p>-->
@@ -1482,7 +1499,7 @@
 <!--            <h1 class="hero-names">-->
 <!--                <span class="temp">글씨 크기 수정중 v0.4.3</span>-->
 <!--            </h1>-->
-        </div>
+<!--        </div>-->
 <!--        <div class="scroll-indicator">-->
 <!--            <span>SCROLL</span>-->
 <!--        </div>-->
@@ -1511,7 +1528,7 @@
                 <span class="child-name">이상민</span>
             </div>
             <div class="parent-row">
-                <span class="names">故 은희찬 · 신유정</span>
+                <span class="names">은희찬 · 신유정</span>
                 <span class="relation">의 장녀</span>
                 <span class="child-name">은지윤</span>
             </div>
@@ -1718,21 +1735,18 @@
             <a href="https://map.kakao.com/link/to/파티웨딩유,37.2712,126.9954"
                target="_blank"
                class="map-btn">
-                <img src="icons/kakaomap_vertical_ko.png" class="map-icon" alt="카카오내비">
-                카카오내비
+                <img src="icons/kakaomap_basic.png" class="map-icon" alt="카카오내비">
             </a>
 
             <a href="https://map.naver.com/v5/search/파티웨딩유"
                target="_blank"
                class="map-btn">
                 <img src="icons/naver_map.png" class="map-icon" alt="네이버지도">
-                네이버지도
             </a>
 
             <a href="tmap://route?goalname=파티웨딩유&goalx=126.9954&goaly=37.2712"
                class="map-btn">
                 <img src="icons/TMAP_logo.jpeg" class="map-icon" alt="티맵">
-                티맵
             </a>
         </div>
 
@@ -1993,6 +2007,16 @@
 
     <script src="gallery_list.js"></script>
     <script>
+        // 처음 이미지 표시 동작
+        const heroImages = document.querySelectorAll('.hero-image');
+        let heroIndex = 0;
+
+        setInterval(() => {
+            heroImages[heroIndex].classList.remove('active');
+            heroIndex = (heroIndex + 1) % heroImages.length;
+            heroImages[heroIndex].classList.add('active');
+        }, 2000); // 2초
+
         let currentGalleryIndex = 0;
 
         // D-Day calculator - 실시간 카운트다운

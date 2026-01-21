@@ -2,8 +2,8 @@ import os
 import shutil
 from PIL import Image, ImageOps   # 🔹 ImageOps 추가
 
-INPUT_DIR = "gallery_original"
-OUTPUT_DIR = "gallery_images"
+INPUT_DIR = "원본이미지"
+OUTPUT_DIR = "리사이즈이미지"
 
 MAX_SIZE = 1600  # 긴 변 기준 px
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
