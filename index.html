@@ -2069,54 +2069,54 @@
 
     <script>
     (() => {
-      const layer = document.querySelector('.petal-layer');
-      if (!layer) return;
+        const layer = document.querySelector('.petal-layer');
+        if (!layer) return;
 
-      // ====== 튜닝 포인트 ======
-      const PETALS_PER_SEC_DESKTOP = 15; // 미친듯이 (PC)
-      const PETALS_PER_SEC_MOBILE  = 60;  // 미친듯이 (모바일)
-      const MAX_PETALS_DESKTOP = 500;     // 화면 내 최대 꽃잎
-      const MAX_PETALS_MOBILE  = 220;
+        // ====== 튜닝 포인트 ======
+        const PETALS_PER_SEC_DESKTOP = 18;   // PC: 초당 18개
+        const PETALS_PER_SEC_MOBILE  = 10;   // 모바일: 초당 10개
+        const MAX_PETALS_DESKTOP = 80;       // 화면 최대 80개
+        const MAX_PETALS_MOBILE  = 80;       // 모바일 최대 55개
 
-      const isMobile = matchMedia('(max-width: 768px)').matches;
-      const PETALS_PER_SEC = isMobile ? PETALS_PER_SEC_MOBILE : PETALS_PER_SEC_DESKTOP;
-      const MAX_PETALS = isMobile ? MAX_PETALS_MOBILE : MAX_PETALS_DESKTOP;
+        const isMobile = matchMedia('(max-width: 768px)').matches;
+        const PETALS_PER_SEC = isMobile ? PETALS_PER_SEC_MOBILE : PETALS_PER_SEC_DESKTOP;
+        const MAX_PETALS = isMobile ? MAX_PETALS_MOBILE : MAX_PETALS_DESKTOP;
 
-      let last = performance.now();
-      let carry = 0;
+        let last = performance.now();
+        let carry = 0;
 
-      function createPetal() {
-        // 최대 개수 제한 (안그러면 DOM 폭증)
-        if (layer.childElementCount >= MAX_PETALS) return;
+        function createPetal() {
+            // 최대 개수 제한 (안그러면 DOM 폭증)
+            if (layer.childElementCount >= MAX_PETALS) return;
 
-        const petal = document.createElement('div');
-        petal.className = 'petal';
+            const petal = document.createElement('div');
+            petal.className = 'petal';
 
-        // 크기/속도 랜덤
-        const size = Math.random() * 10 + 10; // 10~20
-        const dur  = Math.random() * 3 + 7.5; // 4.5~7.5초 (빠름)
-        const sway = Math.random() * 0.8 + 0.3; // 흔들림 속도 배율
-        const left = Math.random() * 110 - 5;  // -5vw ~ 105vw (바람 느낌)
+            // 크기/속도 랜덤
+            const size = Math.random() * 10 + 10; // 10~20
+            const dur  = Math.random() * 1.8 + 10.5; // 4.5~7.5초 (빠름)
+            const sway = Math.random() * 0.8 + 0.3; // 흔들림 속도 배율
+            const left = Math.random() * 110 - 5;  // -5vw ~ 105vw (바람 느낌)
 
-        petal.style.width  = `${size}px`;
-        petal.style.height = `${size}px`;
-        petal.style.left   = `${left}vw`;
+            petal.style.width  = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left   = `${left}vw`;
 
-        // 두 애니메이션 동시: fall / sway
-        petal.style.animationDuration = `${dur}s, ${dur * sway}s`;
-        petal.style.animationDelay    = `0s, 0s`;
+            // 두 애니메이션 동시: fall / sway
+            petal.style.animationDuration = `${dur}s, ${dur * sway}s`;
+            petal.style.animationDelay    = `0s, 0s`;
 
-        // 가끔 살짝 다른 색(핑크/아이보리 톤)
-        const tint = Math.random();
-        if (tint < 0.18) {
-          petal.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(212,165,165,0.22) 60%, rgba(255,255,255,0.55) 100%)';
+            // 가끔 살짝 다른 색(핑크/아이보리 톤)
+            const tint = Math.random();
+            if (tint < 0.18) {
+                petal.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(212,165,165,0.22) 60%, rgba(255,255,255,0.55) 100%)';
+            }
+
+            layer.appendChild(petal);
+
+            // 제거 (dur보다 조금 여유)
+            setTimeout(() => petal.remove(), (dur * 1000) + 400);
         }
-
-        layer.appendChild(petal);
-
-        // 제거 (dur보다 조금 여유)
-        setTimeout(() => petal.remove(), (dur * 1000) + 500);
-      }
 
       // requestAnimationFrame 기반으로 초당 생성량 정확히 유지
       function tick(now) {
@@ -2127,7 +2127,7 @@
         carry += dt * PETALS_PER_SEC;
 
         // carry만큼 생성 (너무 과도하게 한 프레임에 몰리면 cap)
-        const spawn = Math.min(Math.floor(carry), 40);
+        const spawn = Math.min(Math.floor(carry), 12);
         carry -= spawn;
 
         for (let i = 0; i < spawn; i++) createPetal();
