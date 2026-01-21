@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Open Graph (카카오톡, 페북 등 미리보기) -->
-    <meta property="og:title" content="이상민 💍 이지윤 결혼식 모바일 청첩장">
+    <meta property="og:title" content="이상민 💍 은지윤 결혼식 모바일 청첩장">
     <meta property="og:description" content="소중한 날, 함께 해주세요.">
     <meta property="og:image" content="https://sain0722.github.io/sangmin-jiyun-wedding/zkkKIPT1256-3.jpg">
     <meta property="og:url" content="https://sain0722.github.io/sangmin-jiyun-wedding/">
@@ -119,7 +119,6 @@
             opacity: 1;
         }
 
-
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -132,6 +131,59 @@
             /*    rgba(255,255,255,0.3) 90%,*/
             /*    rgba(253,251,247,0.9) 100%*/
             /*);*/
+        }
+
+        .petal-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 5;
+            opacity: 0.5;
+        }
+
+        /* 꽃잎 */
+        .petal {
+          position: absolute;
+          top: 50px;
+          width: 14px;
+          height: 14px;
+          border-radius: 70% 30% 65% 35%;
+          /*border-radius: 100%;*/
+          opacity: 0.95;
+
+          /* 살짝 웨딩톤 */
+            background: radial-gradient(
+              ellipse at 35% 30%,
+              rgba(255,255,255,1) 0%,
+              rgba(255,240,235,0.95) 35%,
+              rgba(230,180,190,0.6) 60%,
+              rgba(255,255,255,0.15) 100%
+            );
+
+          /* 성능 */
+          will-change: transform, opacity;
+          transform: translate3d(0,0,0);
+
+          animation-name: petalFall, petalSway;
+          animation-timing-function: linear, ease-in-out;
+          animation-fill-mode: forwards;
+        }
+
+        /* 낙하 */
+        @keyframes petalFall {
+          0%   { transform: translate3d(0, -10px, 0) rotate(0deg); opacity: 0; }
+          5%   { opacity: 1; }
+          100% { transform: translate3d(0, 120vh, 0) rotate(720deg); opacity: 0.15; }
+        }
+
+        /* 좌우 눈보라 흔들림 */
+        @keyframes petalSway {
+          0%   { margin-left: 0px; }
+          25%  { margin-left: 30px; }
+          50%  { margin-left: -40px; }
+          75%  { margin-left: 25px; }
+          100% { margin-left: -20px; }
         }
 
         .hero-content {
@@ -1374,6 +1426,12 @@
             letter-spacing: 0.2em;
         }
 
+        .footer-comment {
+            font-size: 0.75rem;
+            color: var(--color-warm-gray);
+            letter-spacing: 0.2em;
+        }
+
         /* ===== MUSIC PLAYER ===== */
         .music-player {
             position: fixed;
@@ -1489,6 +1547,7 @@
 <!--            <img src="hero_images/KakaoTalk_20260116_215057088_02.jpg" class="hero-image">-->
 <!--            <img src="hero_images/KakaoTalk_20260116_215057088_03.jpg" class="hero-image">-->
         </div>
+        <div class="petal-layer"></div>
         <div class="hero-overlay"></div>
 <!--        <div class="hero-content">-->
 <!--            <p class="hero-subtitle">Wedding Invitation</p>-->
@@ -1555,13 +1614,13 @@
         <p class="section-title">신랑&신부</p>
 
         <div class="couple-profile">
-            <img src="solo_image/KIPT0172.JPG" alt="신랑 이상민" class="couple-photo">
+            <img src="solo_image/7-1.JPG" alt="신랑 이상민" class="couple-photo">
             <p class="couple-role">신랑</p>
             <p class="couple-name">이상민</p>
         </div>
 
         <div class="couple-profile">
-            <img src="solo_image/KIPT0230.JPG" alt="신부 은지윤" class="couple-photo">
+            <img src="solo_image/6-1.JPG" alt="신부 은지윤" class="couple-photo">
             <p class="couple-role">신부</p>
             <p class="couple-name">은지윤</p>
         </div>
@@ -1978,6 +2037,7 @@
     <footer>
         <p class="footer-names">Sangmin & Jiyun</p>
         <p class="footer-date">2026. 06. 06</p>
+        <p class="footer-comment">GPT에 영혼을 의탁한 내가 제작</p>
     </footer>
 
     <!-- Lightbox for fullscreen gallery -->
@@ -2006,6 +2066,88 @@
     <div class="toast" id="toast"></div>
 
     <script src="gallery_list.js"></script>
+
+    <script>
+    (() => {
+      const layer = document.querySelector('.petal-layer');
+      if (!layer) return;
+
+      // ====== 튜닝 포인트 ======
+      const PETALS_PER_SEC_DESKTOP = 15; // 미친듯이 (PC)
+      const PETALS_PER_SEC_MOBILE  = 60;  // 미친듯이 (모바일)
+      const MAX_PETALS_DESKTOP = 500;     // 화면 내 최대 꽃잎
+      const MAX_PETALS_MOBILE  = 220;
+
+      const isMobile = matchMedia('(max-width: 768px)').matches;
+      const PETALS_PER_SEC = isMobile ? PETALS_PER_SEC_MOBILE : PETALS_PER_SEC_DESKTOP;
+      const MAX_PETALS = isMobile ? MAX_PETALS_MOBILE : MAX_PETALS_DESKTOP;
+
+      let last = performance.now();
+      let carry = 0;
+
+      function createPetal() {
+        // 최대 개수 제한 (안그러면 DOM 폭증)
+        if (layer.childElementCount >= MAX_PETALS) return;
+
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+
+        // 크기/속도 랜덤
+        const size = Math.random() * 10 + 10; // 10~20
+        const dur  = Math.random() * 3 + 7.5; // 4.5~7.5초 (빠름)
+        const sway = Math.random() * 0.8 + 0.3; // 흔들림 속도 배율
+        const left = Math.random() * 110 - 5;  // -5vw ~ 105vw (바람 느낌)
+
+        petal.style.width  = `${size}px`;
+        petal.style.height = `${size}px`;
+        petal.style.left   = `${left}vw`;
+
+        // 두 애니메이션 동시: fall / sway
+        petal.style.animationDuration = `${dur}s, ${dur * sway}s`;
+        petal.style.animationDelay    = `0s, 0s`;
+
+        // 가끔 살짝 다른 색(핑크/아이보리 톤)
+        const tint = Math.random();
+        if (tint < 0.18) {
+          petal.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(212,165,165,0.22) 60%, rgba(255,255,255,0.55) 100%)';
+        }
+
+        layer.appendChild(petal);
+
+        // 제거 (dur보다 조금 여유)
+        setTimeout(() => petal.remove(), (dur * 1000) + 500);
+      }
+
+      // requestAnimationFrame 기반으로 초당 생성량 정확히 유지
+      function tick(now) {
+        const dt = (now - last) / 1000;
+        last = now;
+
+        // 초당 PETALS_PER_SEC개 생성
+        carry += dt * PETALS_PER_SEC;
+
+        // carry만큼 생성 (너무 과도하게 한 프레임에 몰리면 cap)
+        const spawn = Math.min(Math.floor(carry), 40);
+        carry -= spawn;
+
+        for (let i = 0; i < spawn; i++) createPetal();
+
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+
+      // 탭 전환 등으로 느려질 때 폭주 방지
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          layer.innerHTML = '';
+          carry = 0;
+          last = performance.now();
+        }
+      });
+    })();
+    </script>
+
     <script>
         // 처음 이미지 표시 동작
         const heroImages = document.querySelectorAll('.hero-image');
