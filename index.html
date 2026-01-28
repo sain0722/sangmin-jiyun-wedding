@@ -343,9 +343,10 @@
         }
 
         .parents-info .parent-row {
+            position: relative;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: baseline;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
         }
@@ -357,11 +358,30 @@
 
         .parents-info .names {
             font-weight: 400;
+            align-items: baseline;   /* 글자 베이스라인 맞춤 */
+
         }
 
         .parents-info .child-name {
             color: var(--color-gold);
             font-weight: 500;
+        }
+        /* 국화는 레이아웃에 영향 없이 떠있게 */
+        .chrys-float{
+            position: absolute;
+            left: 40px;             /* 텍스트 왼쪽 바깥으로 빼기 (조절) */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .chrysanthemum-icon{
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         .contact-buttons {
@@ -1654,7 +1674,11 @@
                 <span class="relation">의 차남</span>
                 <span class="child-name">이상민</span>
             </div>
-            <div class="parent-row">
+            <div class="parent-row has-chrys">
+                <span class="chrys-float" aria-hidden="true">
+                    <img src="flower.png" alt="" class="chrysanthemum-icon">
+                </span>
+
                 <span class="names">은희찬 · 신유정</span>
                 <span class="relation">의 장녀</span>
                 <span class="child-name">은지윤</span>
@@ -2665,7 +2689,7 @@
                 content: {
                     title: '이상민 ♥ 은지윤 결혼합니다',
                     description: '2026년 6월 6일 토요일 오후 5시\n파티웨딩유',
-                    imageUrl: "https://sain0722.github.io/sangmin-jiyun-wedding/zkkKIPT1256-3.jpg",
+                    imageUrl: "https://sain0722.github.io/sangmin-jiyun-wedding/preview_thumbnail.jpg",
                     link: {
                         mobileWebUrl: "https://sain0722.github.io/sangmin-jiyun-wedding",
                         webUrl: "https://sain0722.github.io/sangmin-jiyun-wedding",
