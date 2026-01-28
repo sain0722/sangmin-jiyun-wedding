@@ -1654,14 +1654,13 @@
     <section class="greeting fade-in">
         <p class="section-title">Invitation</p>
         <p class="greeting-text">
-            서로 다른 길을 걸어온 두 사람이<br>
-            이제 같은 길을 함께 걸어가려 합니다.<br><br>
-            저희 두 사람이 사랑의 이름으로<br>
-            지금껏 살아온 날들보다<br>
-            더 많은 날들을 함께하려 합니다.<br><br>
+            가장 빛나던 어린 시절을 함께 보낸 두 사람이<br>
+            이제 같은 곳을 바라보며 나아가려 합니다.<br><br>
+
             귀한 걸음 하시어<br>
             저희의 새로운 시작을<br>
-            축복해 주시면 감사하겠습니다.
+            축복해 주시면 감사하겠습니다.<br>
+
         </p>
 
         <div class="greeting-ornament"></div>
@@ -2134,10 +2133,20 @@
     </section>
 
     <!-- Footer -->
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-images">
+            <img src="hero_images/KakaoTalk_20260116_215057088_03.jpg" class="hero-image active">
+        </div>
+
+        <div class="hero-overlay"></div>
+    </section>
+
     <footer>
         <p class="footer-names">Sangmin & Jiyun</p>
         <p class="footer-date">2026. 06. 06</p>
-        <p class="footer-comment">GPT에 영혼을 의탁한 내가 제작</p>
+        <p class="footer-comment">made in smlee</p>
     </footer>
 
     <!-- Lightbox for fullscreen gallery -->
@@ -2330,14 +2339,14 @@
 
     <script>
         // 처음 이미지 표시 동작
-        const heroImages = document.querySelectorAll('.hero-image');
-        let heroIndex = 0;
-
-        setInterval(() => {
-            heroImages[heroIndex].classList.remove('active');
-            heroIndex = (heroIndex + 1) % heroImages.length;
-            heroImages[heroIndex].classList.add('active');
-        }, 2000); // 2초
+        // const heroImages = document.querySelectorAll('.hero-image');
+        // let heroIndex = 0;
+        //
+        // setInterval(() => {
+        //     heroImages[heroIndex].classList.remove('active');
+        //     heroIndex = (heroIndex + 1) % heroImages.length;
+        //     heroImages[heroIndex].classList.add('active');
+        // }, 2000); // 2초
 
         let currentGalleryIndex = 0;
 
