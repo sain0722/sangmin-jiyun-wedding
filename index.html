@@ -343,10 +343,9 @@
         }
 
         .parents-info .parent-row {
-            position: relative;
             display: flex;
             justify-content: center;
-            align-items: baseline;
+            align-items: center;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
         }
@@ -366,22 +365,21 @@
             color: var(--color-gold);
             font-weight: 500;
         }
-        /* 국화는 레이아웃에 영향 없이 떠있게 */
-        .chrys-float{
-            position: absolute;
-            left: 40px;             /* 텍스트 왼쪽 바깥으로 빼기 (조절) */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            pointer-events: none;
-            opacity: 0.8;
+        .name-icon-slot{
+            width: 1.2em;            /* 아이콘 자리 고정폭 (여기 조절) */
+            display: inline-flex;
+            justify-content: center; /* 슬롯 가운데 */
         }
-
-        .chrysanthemum-icon{
-            width: 100%;
-            height: 100%;
-            display: block;
+        .chrysanthemum-icon {
+            width: 30px;                 /* 글자 크기랑 비슷 */
+            height: 30px;
+            /*margin-right: 0.1em;*/
+            /*margin-left: -3.1em;*/
+            margin-left: -5.5vw;
+            padding: 0;
+            vertical-align: -0.15em;    /* 텍스트 기준선 맞춤 */
+            opacity: 1.0;              /* 상징성은 줄이고 */
+            filter: saturate(0.9);      /* 과한 색감 방지 */
         }
 
         .contact-buttons {
@@ -1670,11 +1668,11 @@
 
         <div class="parents-info">
             <div class="parent-row">
-                <span class="names">이전우 · 김혜자</span>
+                <span class="names">&nbsp 이전우 · 김혜자</span>
                 <span class="relation">의 차남</span>
                 <span class="child-name">이상민</span>
             </div>
-            <div class="parent-row has-chrys">
+            <div class="parent-row">
                 <span class="chrys-float" aria-hidden="true">
                     <img src="flower.png" alt="" class="chrysanthemum-icon">
                 </span>
