@@ -1,6 +1,6 @@
 const galleryImages = [
-    'gallery_images/1.png',
-    'gallery_images/2.jpg',
+    'gallery_images/1.jpg',
+    'gallery_images/2.png',
     'gallery_images/3.jpg',
     'gallery_images/4.jpg',
     'gallery_images/5.jpg',
@@ -21,4 +21,6 @@ const galleryImages = [
     'gallery_images/20.jpg',
     'gallery_images/21.jpg',
     'gallery_images/22.jpg',
+    'gallery_images/23.jpg',
+    'gallery_images/24.jpg',
 ];

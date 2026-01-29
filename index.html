@@ -119,6 +119,11 @@
             opacity: 1;
         }
 
+        .hero-image.footer {
+            opacity: 1;
+            left: 1vw;
+        }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -373,11 +378,10 @@
         .chrysanthemum-icon {
             width: 30px;                 /* 글자 크기랑 비슷 */
             height: 30px;
+            display: inline-flex;
             /*margin-right: 0.1em;*/
             /*margin-left: -3.1em;*/
-            margin-left: -5.5vw;
             padding: 0;
-            vertical-align: -0.15em;    /* 텍스트 기준선 맞춤 */
             opacity: 1.0;              /* 상징성은 줄이고 */
             filter: saturate(0.9);      /* 과한 색감 방지 */
         }
@@ -1206,10 +1210,15 @@
         }
 
         .transport-desc {
-            font-size: 0.85rem;
+            font-size: 1.0rem;
             color: var(--color-warm-gray);
             line-height: 1.7;
             padding-left: 26px;
+        }
+        .highlight-count{
+            font-weight: 600;
+            color: #222;
+            font-size: 1.1em;
         }
 
         /* ===== ACCOUNT SECTION ===== */
@@ -1662,8 +1671,10 @@
     <section class="greeting fade-in">
         <p class="section-title">Invitation</p>
         <p class="greeting-text">
-            가장 빛나던 어린 시절을 함께 보낸 두 사람이<br>
-            이제 같은 곳을 바라보며 나아가려 합니다.<br><br>
+            가장 빛나던 어린 시절을 <br>
+            함께 보낸 두 사람이 <br>
+            이제 같은 곳을 바라보며 <br>
+            나아가려 합니다.<br><br>
 
             귀한 걸음 하시어<br>
             저희의 새로운 시작을<br>
@@ -1675,16 +1686,16 @@
 
         <div class="parents-info">
             <div class="parent-row">
-                <span class="names">&nbsp 이전우 · 김혜자</span>
+                <span class="names">이전우 · 김혜자</span>
                 <span class="relation">의 차남</span>
                 <span class="child-name">이상민</span>
             </div>
             <div class="parent-row">
-                <span class="chrys-float" aria-hidden="true">
-                    <img src="flower.png" alt="" class="chrysanthemum-icon">
-                </span>
+<!--                <span class="chrys-float" aria-hidden="true">-->
+<!--                    <img src="flower.png" alt="" class="chrysanthemum-icon">-->
+<!--                </span>-->
 
-                <span class="names">은희찬 · 신유정</span>
+                <span class="names">🌳은희찬 · 신유정</span>
                 <span class="relation">의 장녀</span>
                 <span class="child-name">은지윤</span>
             </div>
@@ -1952,7 +1963,10 @@
                     </svg>
                     주차안내
                 </p>
-                <p class="transport-desc">네비게이션 "파티웨딩유" 검색<br>동시 700대 주차 가능 / 무료</p>
+                <p class="transport-desc">
+                  네비게이션 "파티웨딩유" 검색<br>
+                  동시 <span class="highlight-count">700대</span> 주차 가능 / 무료
+                </p>
             </div>
         </div>
     </section>
@@ -2137,15 +2151,13 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-images">
-            <img src="hero_images/KakaoTalk_20260116_215057088_03.jpg" class="hero-image active">
+            <img src="hero_images/footer_image.png" class="hero-image footer">
         </div>
-
-        <div class="hero-overlay"></div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p class="footer-names">Sangmin & Jiyun</p>
+<!--        <p class="footer-names">Sangmin & Jiyun</p>-->
         <p class="footer-date">2026. 06. 06</p>
         <p class="footer-comment">made in smlee</p>
     </footer>
