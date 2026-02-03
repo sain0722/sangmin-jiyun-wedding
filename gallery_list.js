@@ -23,4 +23,8 @@ const galleryImages = [
     'gallery_images/22.jpg',
     'gallery_images/23.jpg',
     'gallery_images/24.jpg',
+    'gallery_images/25.jpg',
+    'gallery_images/26.jpg',
+    'gallery_images/27.jpg',
+    'gallery_images/28.jpg',
 ];

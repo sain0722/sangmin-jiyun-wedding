@@ -2,10 +2,10 @@ import os
 import shutil
 from PIL import Image, ImageOps   # 🔹 ImageOps 추가
 
-INPUT_DIR = "solo_image"
-OUTPUT_DIR = "solo_image"
+INPUT_DIR = "추가이미지"
+OUTPUT_DIR = "추가이미지"
 
-MAX_SIZE = 1600  # 긴 변 기준 px
+MAX_SIZE = 3200  # 긴 변 기준 px
 IMAGE_EXT = (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG")
 SIZE_THRESHOLD = 5 * 1024 * 1024  # 5MB
 
